@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 import requests
-import os
+from os import path, makedirs, getenv
 from bs4 import BeautifulSoup
 
 # URL = "https://free-webnovel.com/freewebnovel/super-gene/chapter-1"
@@ -29,15 +29,12 @@ while(nextchapter != ""):
     chaptertext = soup.find("div", attrs={"id": "chr-content"}).get_text("\n\n",True)
 
     # Create folder for chapters if needed
-    folder = os.path.join(os.getenv('HOME'), 'WebNovelScraper', titlename)
-    if not os.path.exists(folder):
-        os.makedirs(folder)
+    folder = path.join(getenv('HOME'), 'WebNovelScraper', titlename)
+    if not path.exists(folder):
+        makedirs(folder)
 
     # Write new chapter
-    with open(f"{folder}/{titlename}_{chaptername}.txt", "w") as file:
-        file.write(f"{titlename}\n")
-        file.write(f"{chaptername}\n")
-        file.write(chaptertext)
-
+    open(f"{folder}/{titlename} - {chaptername}.txt", "w").write(f"{titlename}\n{chaptername}\n{chaptertext}")
+    print(f"Wrote {chaptername}")
     URL = nextchapter
     
